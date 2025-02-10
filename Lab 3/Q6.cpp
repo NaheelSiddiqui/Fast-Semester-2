@@ -15,7 +15,7 @@ class Matrix {
             matrixID = ID;
             elements = new int*;
             for (int i=0; i<rows; i++) {
-                elements[i] = new int;
+                elements[i] = new int[columns];
             }
             for (int i=0; i<rows; i++) {
                 cout << "\nEnter elements for row " << i+1 << ": ";
@@ -30,7 +30,7 @@ class Matrix {
         int getColumns() {
             return columns;
         }
-        void changeElement(int row, int column, int ID) {
+        void changeElement(int row, int column) {
             int number;
             cout << "Enter new number";
             cin >> number;
@@ -70,7 +70,7 @@ class Matrix {
             cout << "Matrix " << ID << ":" << endl;
             for (int i=0; i<this->rows; i++) {
                 for (int j=0; j<this->columns; j++) {
-                    cout << this->elements[i][j];
+                    cout << this->elements[i][j] << " ";
                 }
                 cout << endl;
             }
@@ -81,21 +81,24 @@ int main() {
     Matrix matrices[4] = {Matrix(3, 3, 1), Matrix(2, 2, 2), Matrix(3, 3, 3), Matrix(4, 2, 4)};
     cout << "1. Get rows\n2. Get columns\n3. Change elements\n4. Add matrices\n5. Multiply matrices (order matters)\n6. Display a matrix\n7. Exit program";
     int option, end = 1;
-    cin >> option;
     int ID, ID1, ID2, rows, columns, row, column;
-    while (end == 1) {
+    while (end==1) {
+        cout << "\nEnter option: ";
+        cin >> option;
         switch (option) {
             case 1:
                 cout << "Enter ID of matrix: ";
                 cin >> ID;
                 rows = matrices[ID-1].getRows();
                 cout << "Matrix " << ID << " has " << rows << " rows";
+                option = 0;
                 break;
             case 2:
                 cout << "Enter ID of matrix: ";
                 cin >> ID;
                 columns = matrices[ID-1].getColumns();
                 cout << "Matrix " << ID << " has " << columns << " columns";
+                option = 0;
                 break;
             case 3:
                 cout << "Enter ID of matrix: ";
@@ -104,7 +107,8 @@ int main() {
                 cin >> row;
                 cout << "Enter column number of element: ";
                 cin >> column;
-                matrices[ID-1].changeElement(row, column, ID);
+                matrices[ID-1].changeElement(row, column);
+                option = 0;
                 break;
             case 4:
                 cout << "Enter ID of matrix 1: ";
@@ -112,6 +116,7 @@ int main() {
                 cout << "Enter ID of matrix 2: ";
                 cin >> ID2;
                 matrices[ID1-1].addMatrices(matrices[ID2-1]);
+                option = 0;
                 break;
             case 5:
                 cout << "Enter ID of matrix 1: ";
@@ -119,11 +124,13 @@ int main() {
                 cout << "Enter ID of matrix 2: ";
                 cin >> ID2;
                 matrices[ID1-1].multiplyMatrices(matrices[ID2-1]);
+                option = 0;
                 break;
             case 6: 
                 cout << "Enter ID of matrix 1: ";
                 cin >> ID;
-                matrices[ID].displayMatrix(ID-1);
+                matrices[ID-1].displayMatrix(ID);
+                option = 0;
                 break;
             case 7:
                 end = 0;
@@ -132,7 +139,6 @@ int main() {
                 cout << "Incorrect input";
                 break;
         }
-        option = 0;
     }
     return 0;
 }
