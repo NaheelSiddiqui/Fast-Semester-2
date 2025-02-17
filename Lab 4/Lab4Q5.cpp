@@ -3,189 +3,189 @@
 
 using namespace std;
 
-class Cafe {
+class CoffeeShop {
 private:
-    string shopName;
-    struct Item {
-        string name;
-        string category;
-        double cost;
+    string name;
+    struct MenuItem {
+        string item;
+        string type;
+        double price;
     };
 
-    Item menu[100];
-    string orderList[100];
-    int menuCount = 0;
-    int orderCount = 0;
+    MenuItem menu[100];
+    string orders[100];
+    int menuSize = 0;
+    int orderSize = 0;
 
 public:
-    Cafe(const string& name) : shopName(name) {}
+    CoffeeShop(const string& shopName) : name(shopName) {}
 
-    void addItemToMenu(const string& name, const string& category, double cost) {
-        if (menuCount < 100) {
-            menu[menuCount].name = name;
-            menu[menuCount].category = category;
-            menu[menuCount].cost = cost;
-            menuCount++;
-            cout << name << " has been added to the menu." << endl;
+    void addMenuItem(const string& item, const string& type, double price) {
+        if (menuSize < 100) {
+            menu[menuSize].item = item;
+            menu[menuSize].type = type;
+            menu[menuSize].price = price;
+            menuSize++;
+            cout << item << " added to the menu." << endl;
         } else {
-            cout << "Menu is at full capacity." << endl;
+            cout << "Menu is full, can't add more items." << endl;
         }
     }
 
-    void placeOrder(const string& itemName) {
-        for (int i = 0; i < menuCount; i++) {
-            if (menu[i].name == itemName) {
-                if (orderCount < 100) {
-                    orderList[orderCount] = itemName;
-                    orderCount++;
+    void addOrder(const string& itemName) {
+        for (int i = 0; i < menuSize; i++) {
+            if (menu[i].item == itemName) {
+                if (orderSize < 100) {
+                    orders[orderSize] = itemName;
+                    orderSize++;
                     cout << itemName << " has been ordered." << endl;
                     return;
                 }
             }
         }
-        cout << "Item is not available." << endl;
+        cout << "This item is currently unavailable" << endl;
     }
 
-    string processOrder() {
-        if (orderCount == 0) {
-            return "All orders have been processed";
+    string fulfillOrder() {
+        if (orderSize == 0) {
+            return "All orders have been fulfilled";
         } else {
-            string currentOrder = orderList[0];
-            for (int i = 0; i < orderCount - 1; i++) {
-                orderList[i] = orderList[i + 1];
+            string order = orders[0];
+            for (int i = 0; i < orderSize - 1; i++) {
+                orders[i] = orders[i + 1];
             }
-            orderCount--;
-            return currentOrder + " is ready";
+            orderSize--;
+            return "The " + order + " is ready";
         }
     }
 
-    void showOrders() {
-        if (orderCount == 0) {
-            cout << "No orders have been placed yet." << endl;
+    void listOrders() {
+        if (orderSize == 0) {
+            cout << "No orders have been placed." << endl;
         } else {
-            cout << "Pending Orders: ";
-            for (int i = 0; i < orderCount; i++) {
-                cout << orderList[i] << " ";
+            cout << "Orders: ";
+            for (int i = 0; i < orderSize; i++) {
+                cout << orders[i] << " ";
             }
             cout << endl;
         }
     }
 
-    double calculateTotal() {
+    double dueAmount() {
         double total = 0;
-        for (int i = 0; i < orderCount; i++) {
-            for (int j = 0; j < menuCount; j++) {
-                if (menu[j].name == orderList[i]) {
-                    total += menu[j].cost;
+        for (int i = 0; i < orderSize; i++) {
+            for (int j = 0; j < menuSize; j++) {
+                if (menu[j].item == orders[i]) {
+                    total += menu[j].price;
                 }
             }
         }
         return total;
     }
 
-    string getCheapestItem() {
-        if (menuCount == 0) {
-            return "Menu is empty";
+    string cheapestItem() {
+        if (menuSize == 0) {
+            return "No items in menu";
         }
 
-        string cheapestItem = menu[0].name;
-        double minPrice = menu[0].cost;
+        string cheapestName = menu[0].item;
+        double cheapestPrice = menu[0].price;
 
-        for (int i = 1; i < menuCount; i++) {
-            if (menu[i].cost < minPrice) {
-                minPrice = menu[i].cost;
-                cheapestItem = menu[i].name;
+        for (int i = 1; i < menuSize; i++) {
+            if (menu[i].price < cheapestPrice) {
+                cheapestPrice = menu[i].price;
+                cheapestName = menu[i].item;
             }
         }
-        return cheapestItem;
+        return cheapestName;
     }
 
-    void showDrinks() {
+    void drinksOnly() {
         bool found = false;
-        for (int i = 0; i < menuCount; i++) {
-            if (menu[i].category == "drink") {
-                cout << menu[i].name << " ";
+        for (int i = 0; i < menuSize; i++) {
+            if (menu[i].type == "drink") {
+                cout << menu[i].item << " ";
                 found = true;
             }
         }
-        if (!found) cout << "No drinks available.";
+        if (!found) cout << "No drinks on the menu.";
         cout << endl;
     }
 
-    void showFood() {
+    void foodOnly() {
         bool found = false;
-        for (int i = 0; i < menuCount; i++) {
-            if (menu[i].category == "food") {
-                cout << menu[i].name << " ";
+        for (int i = 0; i < menuSize; i++) {
+            if (menu[i].type == "food") {
+                cout << menu[i].item << " ";
                 found = true;
             }
         }
-        if (!found) cout << "No food available.";
+        if (!found) cout << "No food on the menu.";
         cout << endl;
     }
 };
 
 int main() {
-    Cafe myCafe("Brewed Awakening");
+    CoffeeShop shop("The Brewed Bean");
 
-    int option;
-    string item, category;
+    int choice;
+    string item, type;
     double price;
     
     while (true) {
-        cout << "\n--- Cafe Management ---\n";
-        cout << "1. Add Item to Menu\n";
-        cout << "2. Place Order\n";
-        cout << "3. Process Order\n";
+        cout << "\n--- Coffee Shop Management System ---\n";
+        cout << "1. Add Menu Item\n";
+        cout << "2. Add Order\n";
+        cout << "3. Fulfill Order\n";
         cout << "4. View Orders\n";
-        cout << "5. View Total Due\n";
+        cout << "5. View Total Amount Due\n";
         cout << "6. View Cheapest Item\n";
-        cout << "7. View Drinks\n";
-        cout << "8. View Food\n";
+        cout << "7. View Drinks Only\n";
+        cout << "8. View Food Only\n";
         cout << "9. Exit\n";
         cout << "Enter your choice: ";
-        cin >> option;
+        cin >> choice;
 
-        switch (option) {
+        switch (choice) {
             case 1:
                 cout << "Enter item name: ";
                 cin >> item;
-                cout << "Enter category (food/drink): ";
-                cin >> category;
-                cout << "Enter price: ";
+                cout << "Enter item type (food/drink): ";
+                cin >> type;
+                cout << "Enter item price: ";
                 cin >> price;
-                myCafe.addItemToMenu(item, category, price);
+                shop.addMenuItem(item, type, price);
                 break;
             case 2:
                 cout << "Enter item name to order: ";
                 cin >> item;
-                myCafe.placeOrder(item);
+                shop.addOrder(item);
                 break;
             case 3:
-                cout << myCafe.processOrder() << endl;
+                cout << shop.fulfillOrder() << endl;
                 break;
             case 4:
-                myCafe.showOrders();
+                shop.listOrders();
                 break;
             case 5:
-                cout << "Total due: $" << myCafe.calculateTotal() << endl;
+                cout << "Total amount due: $" << shop.dueAmount() << endl;
                 break;
             case 6:
-                cout << "Cheapest item: " << myCafe.getCheapestItem() << endl;
+                cout << "Cheapest item: " << shop.cheapestItem() << endl;
                 break;
             case 7:
-                cout << "Drinks: ";
-                myCafe.showDrinks();
+                cout << "Drinks only: ";
+                shop.drinksOnly();
                 break;
             case 8:
-                cout << "Food: ";
-                myCafe.showFood();
+                cout << "Food only: ";
+                shop.foodOnly();
                 break;
             case 9:
-                cout << "Exiting the system." << endl;
+                cout << "Exiting the Coffee Shop Management System." << endl;
                 return 0;
             default:
-                cout << "Invalid option. Try again." << endl;
+                cout << "Invalid choice. Please try again." << endl;
         }
     }
 
