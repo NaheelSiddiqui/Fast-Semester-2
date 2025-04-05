@@ -3,9 +3,11 @@
 #include <string>
 #include <algorithm>
 
+using namespace std; // Add this line to use the standard namespace
+
 class BigInteger {
     private:
-        std::vector<int> digits;
+        vector<int> digits;
         bool isNegative;
 
         void trim() {
@@ -22,7 +24,7 @@ class BigInteger {
             digits.push_back(0);
         }
 
-        BigInteger(const std::string &str) {
+        BigInteger(const string &str) {
             isNegative = (str[0] == '-');
             int start = isNegative ? 1 : 0;
             for (int i = str.size() - 1; i >= start; --i) {
@@ -36,7 +38,7 @@ class BigInteger {
                 BigInteger result;
                 result.isNegative = isNegative;
                 int carry = 0;
-                size_t size = std::max(digits.size(), other.digits.size());
+                size_t size = max(digits.size(), other.digits.size());
                 for (size_t i = 0; i < size || carry; ++i) {
                     int sum = carry;
                     if (i < digits.size()) sum += digits[i];
@@ -118,7 +120,7 @@ class BigInteger {
             return other < *this;
         }
 
-        friend std::ostream& operator<<(std::ostream &out, const BigInteger &num) {
+        friend ostream& operator<<(ostream &out, const BigInteger &num) {
             if (num.isNegative && !(num.digits.size() == 1 && num.digits[0] == 0)) {
                 out << '-';
             }
@@ -128,8 +130,8 @@ class BigInteger {
             return out;
         }
 
-        friend std::istream& operator>>(std::istream &in, BigInteger &num) {
-            std::string str;
+        friend istream& operator>>(istream &in, BigInteger &num) {
+            string str;
             in >> str;
             num = BigInteger(str);
             return in;
@@ -142,8 +144,10 @@ int main() {
     BigInteger c = a + b;
     BigInteger d = a - b;
 
-    std::cout << "a + b = " << c << std::endl;
-    std::cout << "a - b = " << d << std::endl;
-    std::cout << "a == b? " << (a == b ? "Yes" : "No") << std::endl;
-    std::cout << "a < b? " << (a < b ? "Yes" : "No") << std::endl;
+    cout << "a + b = " << c << endl;
+    cout << "a - b = " << d << endl;
+    cout << "a == b? " << (a == b ? "Yes" : "No") << endl;
+    cout << "a < b? " << (a < b ? "Yes" : "No") << endl;
+
+    return 0;
 }
