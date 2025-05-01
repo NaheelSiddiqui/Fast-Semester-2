@@ -20,10 +20,10 @@ struct Employee{
 void writeData(const string& filename){
     ofstream out(filename);
     vector<Employee> employees = {
-        {1, "Amna", "Manager", 3},
-        {2, "Tania", "Manager", 5},
-        {3, "Isbah", "developer", 1},
-        {4, "Aisha", "Manager", 1}
+        {1, "Naheel", "Manager", 3},
+        {2, "Sohaib", "Manager", 5},
+        {3, "Zamin", "developer", 1},
+        {4, "Atta", "Manager", 1}
     };
 
     for (const auto& emp : employees)
@@ -71,6 +71,8 @@ void rewriteQuery(const string& filename, const vector<Employee>& data){
     }
     out.close();
 }
+
+
 int main() {
     string filename = "employees.txt";
 
